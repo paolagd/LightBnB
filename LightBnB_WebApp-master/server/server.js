@@ -1,9 +1,8 @@
-const database = require('./database');
-const apiRoutes = require('./apiRoutes');
-const userRoutes = require('./userRoutes');
+const database = require('./db/database');
+const apiRoutes = require('./routes/apiRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const path = require('path');
-
 const express = require('express');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');

@@ -1,5 +1,4 @@
-const db = require('db');
-
+const db = require('./index');
 /**
  * Get a single user from the database given their email.
  * @param {String} email The email of the user.
@@ -16,35 +15,12 @@ const getUserWithEmail = function (email) {
 }
 exports.getUserWithEmail = getUserWithEmail;
 
-  
-    
- 
-///PRIOR TO REFACTOR
-// const getUserWithEmail = function (email) {
-//   const queryString = `SELECT * FROM users WHERE email = $1`;
-
-//   return pool
-//     .query(queryString, [email])
-//     .then(result => result.rows.length ? result.rows[0] : null)
-//     .catch((err) => err.message);
-// }
-// exports.getUserWithEmail = getUserWithEmail;
-
+   
 /**
  * Get a single user from the database given their id.
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
- */
-// const getUserWithId = function (id) {
-//   const queryString = `SELECT * FROM users WHERE id = $1`;
-
-//   return pool
-//     .query(queryString, [id])
-//     .then(result => result.rows.length ? result.rows[0] : null)
-//     .catch((err) => err.message);
-// }
-// exports.getUserWithId = getUserWithId;
-
+ */ 
 const getUserWithId = function (id) {
   const queryString = `SELECT * FROM users WHERE id = $1`;
 

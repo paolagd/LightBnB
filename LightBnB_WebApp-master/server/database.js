@@ -1,15 +1,4 @@
-const properties = require('./json/properties.json');
-const users = require('./json/users.json');
-const { Pool} = require('pg')
-
-const pool = new Pool({
-  user: 'vagrant',
-  host: 'localhost',
-  database: 'lightbnb',
-  password: '123',
-  port: 5432
-})
-/// Users
+const db = require('db');
 
 /**
  * Get a single user from the database given their email.
@@ -17,26 +6,49 @@ const pool = new Pool({
  * @return {Promise<{}>} A promise to the user.
  */
 
+
 const getUserWithEmail = function (email) {
   const queryString = `SELECT * FROM users WHERE email = $1`;
 
-  return pool
-    .query(queryString, [email])
-    .then(result => result.rows.length ? result.rows[0] : null)
-    .catch((err) => err.message);
+  return db.query(queryString, [email])
+  .then(result => result.rows.length ? result.rows[0] : null)
+  .catch((err) => err.message);
 }
 exports.getUserWithEmail = getUserWithEmail;
+
+  
+    
+ 
+///PRIOR TO REFACTOR
+// const getUserWithEmail = function (email) {
+//   const queryString = `SELECT * FROM users WHERE email = $1`;
+
+//   return pool
+//     .query(queryString, [email])
+//     .then(result => result.rows.length ? result.rows[0] : null)
+//     .catch((err) => err.message);
+// }
+// exports.getUserWithEmail = getUserWithEmail;
 
 /**
  * Get a single user from the database given their id.
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
+// const getUserWithId = function (id) {
+//   const queryString = `SELECT * FROM users WHERE id = $1`;
+
+//   return pool
+//     .query(queryString, [id])
+//     .then(result => result.rows.length ? result.rows[0] : null)
+//     .catch((err) => err.message);
+// }
+// exports.getUserWithId = getUserWithId;
+
 const getUserWithId = function (id) {
   const queryString = `SELECT * FROM users WHERE id = $1`;
 
-  return pool
-    .query(queryString, [id])
+  return db.query(queryString, [id])
     .then(result => result.rows.length ? result.rows[0] : null)
     .catch((err) => err.message);
 }
@@ -51,8 +63,7 @@ exports.getUserWithId = getUserWithId;
 const addUser = function (user) {
   const queryString = `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *`;
   const values = [user.name, user.email, user.password];
-  return pool
-    .query(queryString, values)
+  return db.query(queryString, values)
     .then(result => console.log(result))
     .catch((err) => err.message);
 }
@@ -73,8 +84,7 @@ const getAllReservations = function (guest_id, limit = 10) {
           LIMIT $2`;
 
   const values = [guest_id, limit];
-  return pool
-    .query(queryString, values)
+  return db.query(queryString, values)
     .then(result => result.rows)
     .catch((err) => err.message);
 }
@@ -136,7 +146,7 @@ const getAllProperties = (options, limit = 10) => {
    LIMIT $${queryParams.length};
    `;
    
-  return pool.query(queryString, queryParams)
+  return db.query(queryString, queryParams)
   .then((res) => res.rows)
   .catch((err) => err.message);
 
@@ -157,8 +167,7 @@ const addProperty = function (property) {
 
   const values = [property.owner_id, property.title, property.description, property.thumbnail_photo_url, property.cover_photo_url, property.cost_per_night, property.number_of_bathrooms, property.number_of_bedrooms, property.street, property.city, property.province, property.post_code, property.country];
 
-  return pool
-  .query(queryString, values)
+  return db.query(queryString, values)
   .then(result => console.log(result))
   .catch((err) => err.message);
 

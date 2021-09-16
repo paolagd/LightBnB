@@ -1,6 +1,6 @@
 const properties = require('./json/properties.json');
 const users = require('./json/users.json');
-const { Pool, Query } = require('pg')
+const { Pool} = require('pg')
 
 const pool = new Pool({
   user: 'vagrant',
@@ -135,9 +135,7 @@ const getAllProperties = (options, limit = 10) => {
    ORDER BY cost_per_night
    LIMIT $${queryParams.length};
    `;
- 
-   console.log(queryString, queryParams);
- 
+   
   return pool.query(queryString, queryParams)
   .then((res) => res.rows)
   .catch((err) => err.message);

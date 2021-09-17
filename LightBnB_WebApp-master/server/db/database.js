@@ -54,6 +54,7 @@ exports.addUser = addUser;
  */
 const getAllReservations = function (guest_id, limit = 10) {
   const queryString = `SELECT * FROM reservations 
+          JOIN properties ON property_id = properties.id
           WHERE guest_id = $1 
           AND ( (start_date < now()::date AND end_date < now()::date) 
           OR (start_date > now()::date AND end_date > now()::date)) 
@@ -91,7 +92,7 @@ const getAllProperties = (options, limit = 10) => {
  
   if (options.owner_id) {
     queryString+= queryParams.length === 0 ? `WHERE ` : `AND `;
-    queryParams.push(`%${options.owner_id}%`);
+    queryParams.push(`${options.owner_id}`);
     queryString += `properties.owner_id = $${queryParams.length} `;
   }
 
